@@ -1,0 +1,23 @@
+services:
+  todo:
+    restart: on-failure
+    build: .
+    environment:
+      - ADDRESS=0.0.0.0:8000
+      - RUST_LOG=debug
+      - PG_DBNAME=postgres
+      - PG_HOST=db
+      - PG_USER=postgres
+      - PG_PASSWORD=mysecretpassword
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  db:
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    image: postgres:15.1
+    ports:
+      - "5432:5432"
